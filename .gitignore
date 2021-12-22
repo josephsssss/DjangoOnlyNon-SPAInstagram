@@ -6,3 +6,7 @@ venv/
 .idea
 .vscode
 .prettierignore
+env.sh
+.env
+env.bat
+secrets.json

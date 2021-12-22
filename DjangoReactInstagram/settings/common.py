@@ -9,11 +9,13 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+import json
 import os
 from os.path import abspath, dirname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
@@ -28,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 ADMIN = [
-    (),
+    ('Joseph Park', 'me@kingstagram.kr'),
 ]
 # Application definition
 
@@ -43,9 +45,10 @@ INSTALLED_APPS = [
     # Third-Party Apps
     'bootstrap4',
     'debug_toolbar',
-
+    'django_pydenticon',
     # Local Apps
     'accounts',
+    'instagram',
 ]
 
 MIDDLEWARE = [
@@ -152,11 +155,29 @@ if DEBUG:
     ]
 
 # Email with Send Grid
-SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+
+
+# secret_file = os.path.join(BASE_DIR, 'secrets.json')
+#
+# with open(secret_file) as f:
+#     secrets = json.loads(f.read())
+#
+#
+# # Keep secret keys in secrets.json
+# def get_secret(setting, secrets=secrets):
+#     try:
+#         return secrets[setting]
+#     except KeyError:
+#         error_msg = "Set the {0} environment variable".format(setting)
+#         raise ImproperlyConfigured(error_msg)
+
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-WELCOME_EMAIL_SENDER = "me@kingstagram.kr"
+EMAIL_USE_TLS = False
+SENDGRID_SANDBOX_MODE_IN_DEBUG = True
+SENDGRID_ECHO_TO_STDOUT = True
+WELCOME_EMAIL_SENDER = "josephsssss@hotmail.com"
